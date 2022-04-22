@@ -15,7 +15,12 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => [
+        'api/*',
+        '/login',
+        '/logout',
+        'sanctum/csrf-cookie' //cuando SPA se hace esta peticion nates de poder acceder a los datos del usuario
+    ],
 
     'allowed_methods' => ['*'],
 
@@ -29,6 +34,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => true,
+    'supports_credentials' => true, //esta cabecear se manda desde axios y es necesario
 
 ];
