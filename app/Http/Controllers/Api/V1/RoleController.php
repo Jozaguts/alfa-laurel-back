@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PermissionStoreRequest;
 
-class PermissionController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-         return response()->json(Permission::all());
+       return response()->json(Role::all());
     }
 
     /**
@@ -27,10 +27,9 @@ class PermissionController extends Controller
      */
     public function store(PermissionStoreRequest $request)
     {
-        $permission = Permission::create($request->validated());
+        $permission = Role::create($request->validated());
 
         return response()->json($permission ? 'success': 'error', $permission ? 201 : 400 );
-
     }
 
     /**
@@ -64,9 +63,9 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        $result = Permission::find($id)
+        $result = Role::find($id)
             ->delete();
 
-      return response()->json(['success' => $result, 'message' => $result ? 'Permiso eliminado' : 'No fue posible eliminar el permiso']);
+        return response()->json(['success' => $result, 'message' => $result ? 'Rol eliminado' : 'No fue posible eliminar el rol']);
     }
 }

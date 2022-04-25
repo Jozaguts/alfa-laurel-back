@@ -22,4 +22,5 @@ Route::middleware('auth:sanctum')->group( function () {
         return response()->json($user);
     });
     Route::apiResource('permissions', App\Http\Controllers\Api\V1\PermissionController::class);
+    Route::apiResource('roles', App\Http\Controllers\Api\V1\RoleController::class);
 });
