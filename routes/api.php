@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,6 +18,8 @@ Route::post('/login',[App\Http\Controllers\Api\V1\AuthController::class,'login']
 Route::middleware('auth:sanctum')->group( function () {
     Route::post('/logout',[App\Http\Controllers\Api\V1\AuthController::class,'logout']);
     Route::get('/user',function (Request $request) {
-        return $request->user();
+        $user = User::with(['roles','permissions'])->where('id', $request->user()->id)->first();
+        return response()->json($user);
     });
+    Route::apiResource('permissions', App\Http\Controllers\Api\V1\PermissionController::class);
 });
