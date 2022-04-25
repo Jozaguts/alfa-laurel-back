@@ -82,7 +82,7 @@ class UsersTableSeeder extends Seeder
                 'name' => $this->faker->firstName,
                 'paternal_name' => $this->faker->lastName,
                 'maternal_name' => $this->faker->lastName,
-                'email' => 'contro_escolar@example.com',
+                'email' => 'control_escolar@example.com',
                 'code' => '1234',
                 'password' => Hash::make('password'),
                 'birthday' => $this->faker->date('11.12.10'),
