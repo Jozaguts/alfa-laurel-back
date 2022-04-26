@@ -37,10 +37,4 @@ class AuthController extends Controller
         return response()->json('Usuario cerro sesión...',200);
     }
 
-
-
-    public function register(UserPostRequest $request)
-    {
-        dd($request);
-    }
 }

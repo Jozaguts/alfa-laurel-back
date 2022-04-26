@@ -23,4 +23,5 @@ Route::middleware('auth:sanctum')->group( function () {
     });
     Route::apiResource('permissions', App\Http\Controllers\Api\V1\PermissionController::class);
     Route::apiResource('roles', App\Http\Controllers\Api\V1\RoleController::class);
+    Route::apiResource('users', App\Http\Controllers\Api\V1\UserController::class);
 });
