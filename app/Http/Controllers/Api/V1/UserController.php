@@ -33,6 +33,7 @@ class UserController extends Controller
         $data =  $request->validated();
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
+        $user->assignRole($request->role);
         return response()->json($user ? 'success': 'error', $user ? 201 : 400 );
     }
 
@@ -44,11 +45,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
-       return response()->json(User::find($id));
+       return response()->json(User::with('roles')->where('id', $id)->first());
     }
 
     public function update(Request $request, $id)
     {
+
         $data = $request->all();
         $validator = Validator::make($data['data'], [
             'name' => 'string',
@@ -62,16 +64,19 @@ class UserController extends Controller
             'phone' => 'digits:10,13',
             'contact_name' => 'string',
             'comments' => 'string|nullable',
+            'role' => 'string|nullable',
         ]);
-        var_dump($validator->validated());
 
        if (isset($data['data']['password']) && !is_null($data['data']['password'])) {
            $data['data']['password'] = Hash::make($data['data']['password']);
        }
+        $user = User::find($id);
 
-       $user = User::find($id)
-           ->update($data['data']);
-        return response()->json($user ? 'success': 'error', $user ? 200 : 400 );
+         $result = $user->update($data['data']);
+        if (isset($data['data']['role']) && !is_null($data['data']['role'])) {
+            $user->syncRoles([$data['data']['role']]);
+        }
+        return response()->json($result ? 'success': 'error', $result ? 200 : 400 );
 
     }
 
