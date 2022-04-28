@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->string('value');
-            $table->enum('level', ['Alta', 'Media','Baja']);
+            $table->integer('number');
+            $table->enum('level', ['A', 'M','B']);
             $table->unsignedBigInteger('exam_id');
             $table->foreign('exam_id')
                 ->references('id')
