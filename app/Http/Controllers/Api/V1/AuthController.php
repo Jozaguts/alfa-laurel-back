@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Cassandra\Exception\ValidationException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UserPostRequest;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function login(){
-        request()->validate([
+    public function login(Request $request){
+        $request->validate([
             'email' => 'required|email',
             'password' => 'required',
             'device_name' => 'required'
@@ -23,7 +24,9 @@ class AuthController extends Controller
             throw ValidationException::withMessages(['email' => 'Las credenciales proveídas son incorrectas.']);
         }
         // ejemplo para trabajar con tokens
-        return $user->createToken(request()->device_name)->plainText;
+        $token = $user->createToken('token');
+
+        return $token->plainTextToken;
     }
 
     public function logout() {

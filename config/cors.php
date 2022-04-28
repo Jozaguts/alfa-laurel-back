@@ -19,7 +19,7 @@ return [
         'api/*',
         '/login',
         '/logout',
-        'sanctum/csrf-cookie' //cuando SPA se hace esta peticion nates de poder acceder a los datos del usuario
+        'sanctum/csrf-cookie' //cuando SPA se hace esta petición antes de poder acceder a los datos del usuario
     ],
 
     'allowed_methods' => ['*'],
