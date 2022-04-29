@@ -26,6 +26,7 @@ class ExamStoreRequest extends FormRequest
         return [
             'name' => 'required|string',
             'subject_id' => 'required|exists:subjects,id',
+            'number' => 'required|integer',
             'questions.*.question' =>  [Rule::requiredIf(request()->hasFile('file')),'string'],
             'file' =>  [Rule::requiredIf(request()->hasFile('file')),'file'],
             'questions.*.option1' => [Rule::requiredIf(!request()->hasFile('file')),'string'],

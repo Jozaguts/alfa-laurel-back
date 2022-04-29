@@ -51,7 +51,7 @@ class CreateExam
             return ['success' => true, 'message' => 'success'];
         }catch (\Exception $e) {
             DB::rollBack();
-            return ['success' => false, 'message' => $e->getMessage()];
+            return ['success' => false, 'message' => $e->getMessage() . $e->getFile(), $e->getLine()];
         }
     }
 }
