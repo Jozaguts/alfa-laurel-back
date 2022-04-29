@@ -29,12 +29,14 @@ class ExamStoreRequest extends FormRequest
             'user_id' => 'required|exists:users,id',
 //            'number' => 'required|integer',
             'questions.*.question' =>  [Rule::requiredIf(request()->hasFile('file')),'string'],
+            'questions.*.number' =>  [Rule::requiredIf(!request()->hasFile('file')),'integer'],
             'file' =>  [Rule::requiredIf(request()->hasFile('file')),'file'],
             'questions.*.option1' => [Rule::requiredIf(!request()->hasFile('file')),'string'],
             'questions.*.option2' =>  [Rule::requiredIf(!request()->hasFile('file')),'string'],
             'questions.*.option3' =>  [Rule::requiredIf(!request()->hasFile('file')),'string'],
             'questions.*.level' =>  [Rule::requiredIf(!request()->hasFile('file')),'string'],
-            'questions.*.answer' =>  [Rule::requiredIf(!request()->hasFile('file')),'string'],
+            'questions.*.answer' =>  [Rule::requiredIf(!request()->hasFile('file')),'integer'],
+
         ];
     }
 }

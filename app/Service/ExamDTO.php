@@ -52,7 +52,9 @@ class ExamDTO
             $spreadsheet = $this->initReader();
             $arrayQuestion = $spreadsheet->getActiveSheet()->toArray();
             unset($arrayQuestion[0]);
-            $this->questions = $this->questionNormalized($arrayQuestion);
+           $this->questions = $this->questionNormalized($arrayQuestion);
+        }else {
+            $this->questions = $this->questionNormalized($this->questions);
         }
         return $this->questions;
     }
@@ -68,19 +70,30 @@ class ExamDTO
     }
     private function questionNormalized($arrayQuestion): array
     {
+        // solo para archivos excel
+        if (request()->hasFile('file')){
+            return array_map(function($question) {
+                $question[self::ANSWER_INDEX] = match($question[self::ANSWER_INDEX]) {
+                    1, => $question[self::OPTION_1_INDEX],
+                    2, => $question[self::OPTION_2_INDEX],
+                    3, => $question[self::OPTION_3_INDEX],
+                };
+                return array_combine(
+                    ['number','question','level','option1','option2','option3','answer'],
+                    $question
+                );
+            },$arrayQuestion);
+        } else {
+          return array_map(function($question) {
+                $question['answer'] = match($question['answer']) {
+                    1, => $question['option1'],
+                    2, => $question['option2'],
+                    3, => $question['option3'],
+                };
+                return $question;
+            },$arrayQuestion);
+        }
 
-        return array_map(function($question){
-
-            $question[self::ANSWER_INDEX] = match($question[self::ANSWER_INDEX]) {
-                1, => $question[self::OPTION_1_INDEX],
-                2, => $question[self::OPTION_2_INDEX],
-                3, => $question[self::OPTION_3_INDEX],
-            };
-            return array_combine(
-                ['number','question','level','option1','option2','option3','answer'],
-                $question
-            );
-        },$arrayQuestion);
 
     }
 
