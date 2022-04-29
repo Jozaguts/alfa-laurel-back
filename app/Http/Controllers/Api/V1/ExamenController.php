@@ -7,16 +7,19 @@ use App\Http\Requests\ExamStoreRequest;
 use App\Models\Exam;
 use App\Service\CreateExam;
 use App\Service\ExamDTO;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class ExamenController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
        return response()->json(Exam::all());
     }
@@ -33,23 +36,20 @@ class ExamenController extends Controller
         return response()->json($result['message'], $result['success'] ? 201 : 400 );
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
-        //
+       return response()->json(
+           Exam::find($id)->questions()->get()
+       );
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -60,7 +60,7 @@ class ExamenController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
