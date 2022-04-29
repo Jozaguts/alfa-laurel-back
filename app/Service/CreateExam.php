@@ -18,6 +18,7 @@ class CreateExam
             $examId = DB::table('exams')->insertGetId([
                 'name' => $this->examDto->getName(),
                 'subject_id' => $this->examDto->getSubjectId(),
+                'user_id' => $this->examDto->getUserId(),
                 "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
             ]);
             forEach($this->examDto->getQuestions() as $question) {

@@ -9,12 +9,14 @@ class ExamDTO
 {
     public string $name;
     public int $subject_id;
+    public int $user_id;
     public mixed $questions;
     const ANSWER_INDEX = 6, OPTION_1_INDEX = 3, OPTION_2_INDEX = 4, OPTION_3_INDEX = 5;
     public function __construct($data)
     {
         $this->name = $data['name'];
         $this->subject_id = $data['subject_id'];
+        $this->user_id = $data['user_id'];
         request()->hasFile('file')
             ? $this->questions = request()->file('file')
             : $this->questions = $data['questions'];
@@ -34,6 +36,11 @@ class ExamDTO
     public function getSubjectId(): mixed
     {
         return $this->subject_id;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->user_id;
     }
 
     /**
@@ -63,6 +70,7 @@ class ExamDTO
     {
 
         return array_map(function($question){
+
             $question[self::ANSWER_INDEX] = match($question[self::ANSWER_INDEX]) {
                 1, => $question[self::OPTION_1_INDEX],
                 2, => $question[self::OPTION_2_INDEX],
