@@ -42,8 +42,10 @@ class ExamDTO
     public function getQuestions(): mixed
     {
         if ( $this->questions instanceof UploadedFile) {
-            $this->initReader();
-            $this->questions = $this->questionNormalized();
+            $spreadsheet = $this->initReader();
+            $arrayQuestion = $spreadsheet->getActiveSheet()->toArray();
+            unset($arrayQuestion[0]);
+            $this->questions = $this->questionNormalized($arrayQuestion);
         }
         return $this->questions;
     }
@@ -57,11 +59,9 @@ class ExamDTO
             return $e->getMessage();
         }
     }
-    private function questionNormalized(): array
+    private function questionNormalized($arrayQuestion): array
     {
-        $spreadsheet = $this->initReader();
-        $arrayQuestion = $spreadsheet->getActiveSheet()->toArray();
-        unset($arrayQuestion[0]);
+
         return array_map(function($question){
             $question[self::ANSWER_INDEX] = match($question[self::ANSWER_INDEX]) {
                 1, => $question[self::OPTION_1_INDEX],

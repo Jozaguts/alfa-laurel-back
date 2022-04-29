@@ -29,7 +29,8 @@ class ExamenController extends Controller
     public function store(ExamStoreRequest $request)
     {
         $exam =  new CreateExam(new ExamDTO($request->validated()));
-       return $exam->execute();
+        $result = $exam->execute();
+        return response()->json($result['message'], $result['success'] ? 201 : 400 );
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -97,5 +98,8 @@ class UsersTableSeeder extends Seeder
         foreach($users as $user ) {
             User::create($user);
         }
+        Subject::create(['name' => 'Matemáticas']);
+        Subject::create(['name' => 'Español']);
+        Subject::create(['name' => 'Ingles']);
     }
 }

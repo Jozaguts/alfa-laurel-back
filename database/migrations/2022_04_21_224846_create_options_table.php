@@ -20,7 +20,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('questions')
                 ->cascadeOnDelete();
-            $table->string('value');
+            $table->string('option');
             $table->boolean('is_answer')->default(0);
             $table->softDeletes();
             $table->timestamps();
