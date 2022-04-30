@@ -27,9 +27,13 @@ class RoleController extends Controller
      */
     public function store(PermissionStoreRequest $request)
     {
-        $permission = Role::create($request->validated());
-
-        return response()->json($permission ? 'success': 'error', $permission ? 201 : 400 );
+        $role = Role::create(['guard_name' => 'sanctum', 'name' => $request->name]);
+        if (!empty($request->validated()['permissions'])) {
+            foreach ($request->validated()['permissions'] as $permission) {
+                $role->givePermissionTo($permission['value']);
+            }
+        }
+        return response()->json($role ? 'success': 'error', $role ? 201 : 400 );
     }
 
     /**

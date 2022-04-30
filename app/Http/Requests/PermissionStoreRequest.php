@@ -24,7 +24,8 @@ class PermissionStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' =>'required|string|unique:roles'
+            'name' =>'required|string|unique:roles',
+            'permissions.*.value' =>'required|string|exists:permissions,name'
         ];
     }
 

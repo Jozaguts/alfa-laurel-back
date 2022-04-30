@@ -19,9 +19,9 @@ class RolesPermissionsTableSeeder extends Seeder
     {
         $roles = [['name' => 'admin'],['name' => 'control escolar'],['name' => 'maestro']];
         $permissions = [
-            ['name' =>'crear examenes'], ['name' =>'editar examenes'], ['name' =>'ver examenes'], ['name' =>'eliminar examenes'],
-            ['name' =>'crear usuario'], ['name' =>'editar usuario'], ['name' =>'ver usuario'], ['name' =>'eliminar usuario'],
-            ['name' =>'crear materias'], ['name' =>'editar materias'], ['name' =>'ver materias'], ['name' =>'eliminar materias']
+            ['guard_name' => 'sanctum','name' =>'crear examenes'], ['guard_name' => 'sanctum','name' =>'editar examenes'], ['guard_name' => 'sanctum','name' =>'ver examenes'], ['guard_name' => 'sanctum','name' =>'eliminar examenes'],
+            ['guard_name' => 'sanctum','name' =>'crear usuario'], ['guard_name' => 'sanctum','name' =>'editar usuario'], ['guard_name' => 'sanctum','name' =>'ver usuario'], ['guard_name' => 'sanctum','name' =>'eliminar usuario'],
+            ['guard_name' => 'sanctum','name' =>'crear materias'], ['guard_name' => 'sanctum','name' =>'editar materias'], ['guard_name' => 'sanctum','name' =>'ver materias'], ['guard_name' => 'sanctum','name' =>'eliminar materias']
         ];
         foreach ($roles as $role) {
             Role::create($role);
