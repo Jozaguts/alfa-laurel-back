@@ -13,6 +13,7 @@ class CreateExam
 
     public function execute()
     {
+
         DB::beginTransaction();
         try {
             $examId = DB::table('exams')->insertGetId([
@@ -22,6 +23,27 @@ class CreateExam
                 "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
             ]);
             forEach($this->examDto->getQuestions() as $question) {
+                $option1 = 0;
+                $option2 = 0;
+                $option3 = 0;
+                $is_answer1= false;
+                $is_answer2= false;
+                $is_answer3= false;
+                if (request()->hasFile('file')) {
+                    $option1 = $question['option1'];
+                    $option2 = $question['option2'];
+                    $option3 = $question['option3'];
+                    $is_answer1 = $question['option1'] === $question['answer'];
+                    $is_answer2 = $question['option2'] === $question['answer'];
+                    $is_answer3 = $question['option3'] === $question['answer'];
+                } else {
+                    $option1 = $question['options'][0]['option'];
+                    $option2 = $question['options'][1]['option'];
+                    $option3 = $question['options'][2]['option'];
+                    $is_answer1 = $question['options'][0]['is_answer'];
+                    $is_answer2 = $question['options'][1]['is_answer'];
+                    $is_answer3 = $question['options'][2]['is_answer'];
+                }
                 $questionId = DB::table('questions')->insertGetId([
                     'number' => $question['number'],
                     'question' => $question['question'],
@@ -31,20 +53,20 @@ class CreateExam
                 ]);
                 DB::table('options')->insert([
                     'question_id' => $questionId,
-                    'option' => $question['option1'],
-                    'is_answer' => $question['option1'] === $question['answer'],
+                    'option' => $option1,
+                    'is_answer' => $is_answer1,
                     "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
                 ]);
                 DB::table('options')->insert([
                     'question_id' => $questionId,
-                    'option' => $question['option2'],
-                    'is_answer' => $question['option2'] === $question['answer'],
+                    'option' => $option2,
+                    'is_answer' => $is_answer2,
                     "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
                 ]);
                 DB::table('options')->insert([
                     'question_id' => $questionId,
-                    'option' => $question['option3'],
-                    'is_answer' => $question['option3'] === $question['answer'],
+                    'option' => $option3,
+                    'is_answer' => $is_answer3,
                     "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
                 ]);
             }

@@ -53,9 +53,10 @@ class ExamDTO
             $arrayQuestion = $spreadsheet->getActiveSheet()->toArray();
             unset($arrayQuestion[0]);
            $this->questions = $this->questionNormalized($arrayQuestion);
-        }else {
-            $this->questions = $this->questionNormalized($this->questions);
         }
+//        else {
+//            $this->questions = $this->questionNormalized($this->questions);
+//        }
         return $this->questions;
     }
     private function initReader(): \PhpOffice\PhpSpreadsheet\Spreadsheet|string
@@ -85,6 +86,7 @@ class ExamDTO
             },$arrayQuestion);
         } else {
           return array_map(function($question) {
+
                 $question['answer'] = match($question['answer']) {
                     1, => $question['option1'],
                     2, => $question['option2'],
