@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PermissionStoreRequest extends FormRequest
+class SubjectStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,17 +19,17 @@ class PermissionStoreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules()
     {
         return [
-            'name' =>'required|string|unique:permissions',
+            'name' =>'required|string|unique:subjects',
         ];
     }
 
     public function attributes()
     {
-        return ['name' => 'permiso'];
+        return ['name' => 'materia'];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Requests\SubjectStoreRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Subject;
@@ -13,10 +14,9 @@ class SubjectController extends Controller
         return response()->json(Subject::all());
     }
 
-    public function store(Request $request)
+    public function store(SubjectStoreRequest $request)
     {
-        $validator = Validator::make($request->all(), ['name' => 'required']);
-        $result = Subject::create($validator->validated());
+        $result = Subject::create($request->validated());
         return response()->json($result ? 'success': 'error', $result ? 201 : 400 );
     }
 
