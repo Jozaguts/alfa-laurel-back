@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Requests\RoleUpdateRequest;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
@@ -28,11 +29,7 @@ class RoleController extends Controller
     public function store(PermissionStoreRequest $request)
     {
         $role = Role::create(['guard_name' => 'sanctum', 'name' => $request->name]);
-        if (!empty($request->validated()['permissions'])) {
-            foreach ($request->validated()['permissions'] as $permission) {
-                $role->givePermissionTo($permission['value']);
-            }
-        }
+        $role->syncPermissions($request->validated()['permissions']);
         return response()->json($role ? 'success': 'error', $role ? 201 : 400 );
     }
 
@@ -54,9 +51,12 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RoleUpdateRequest $request, $id)
     {
-        //
+        $role = Role::find($id);
+        $role->syncPermissions($request->validated()['permissions']);
+        $role->update(['name' => $request->name]);
+        return response()->json($role ? 'success': 'error', $role ? 201 : 400 );
     }
 
     /**
