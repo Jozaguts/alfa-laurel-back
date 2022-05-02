@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('question');
             $table->integer('number');
+            $table->integer('answer');
             $table->enum('level', ['A', 'M','B']);
             $table->unsignedBigInteger('exam_id');
             $table->foreign('exam_id')

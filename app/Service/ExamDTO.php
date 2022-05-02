@@ -11,9 +11,10 @@ class ExamDTO
     public int $subject_id;
     public int $user_id;
     public mixed $questions;
-    const ANSWER_INDEX = 6, OPTION_1_INDEX = 3, OPTION_2_INDEX = 4, OPTION_3_INDEX = 5;
+    const ANSWER_INDEX = 6, NUMBER_INDEX = 0, QUESTION_INDEX = 1, LEVEL_INDEX = 2;
     public function __construct($data)
     {
+
         $this->name = $data['name'];
         $this->subject_id = $data['subject_id'];
         $this->user_id = $data['user_id'];
@@ -54,9 +55,6 @@ class ExamDTO
             unset($arrayQuestion[0]);
            $this->questions = $this->questionNormalized($arrayQuestion);
         }
-//        else {
-//            $this->questions = $this->questionNormalized($this->questions);
-//        }
         return $this->questions;
     }
     private function initReader(): \PhpOffice\PhpSpreadsheet\Spreadsheet|string
@@ -72,29 +70,29 @@ class ExamDTO
     private function questionNormalized($arrayQuestion): array
     {
         // solo para archivos excel
-        if (request()->hasFile('file')){
-            return array_map(function($question) {
-                $question[self::ANSWER_INDEX] = match($question[self::ANSWER_INDEX]) {
-                    1, => $question[self::OPTION_1_INDEX],
-                    2, => $question[self::OPTION_2_INDEX],
-                    3, => $question[self::OPTION_3_INDEX],
-                };
-                return array_combine(
-                    ['number','question','level','option1','option2','option3','answer'],
-                    $question
-                );
+        $options = [];
+            return array_map(function($question) use ($options){
+                $options[] = [
+                    'option' => $question[3],
+                    'is_answer' => $question[6] === 1,
+                ];
+                $options[] = [
+                    'option' => $question[4],
+                    'is_answer' => $question[6] === 2,
+                ];
+                $options[] = [
+                    'option' => $question[5],
+                    'is_answer' => $question[6] === 3,
+                ];
+              return [
+                  'number' => $question[self::NUMBER_INDEX],
+                  'question' => $question[self::QUESTION_INDEX],
+                  'level' => $question[self::LEVEL_INDEX],
+                  'answer' => $question[self::ANSWER_INDEX],
+                  'options' => $options
+              ];
             },$arrayQuestion);
-        } else {
-          return array_map(function($question) {
 
-                $question['answer'] = match($question['answer']) {
-                    1, => $question['option1'],
-                    2, => $question['option2'],
-                    3, => $question['option3'],
-                };
-                return $question;
-            },$arrayQuestion);
-        }
 
 
     }

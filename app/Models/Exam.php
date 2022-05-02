@@ -11,8 +11,12 @@ class Exam extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = ['subject_id', 'name','number'];
 
-    public function questions(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    public function questions()
     {
-        return $this->hasManyThrough(Option::class,Question::class);
+        return $this->hasMany(Question::class);
+    }
+    public function options(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->hasManyThrough(Option::class, Question::class);
     }
 }
