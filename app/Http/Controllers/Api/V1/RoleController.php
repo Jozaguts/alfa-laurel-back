@@ -29,7 +29,7 @@ class RoleController extends Controller
      */
     public function store(RoleStoreRequest $request)
     {
-        $role = Role::create(['guard_name' => 'sanctum', 'name' => $request->name]);
+        $role = Role::create(['name' => $request->name]);
         $role->syncPermissions($request->validated()['permissions']);
         return response()->json($role ? 'success': 'error', $role ? 201 : 400 );
     }

@@ -18,11 +18,11 @@ class RolesPermissionsTableSeeder extends Seeder
     public function run()
     {
         //error el los guard_name
-        $roles = [['guard_name' => 'sanctum','name' => 'admin'],['guard_name' => 'sanctum','name' => 'control escolar'],['guard_name' => 'sanctum','name' => 'maestro']];
+        $roles = [['name' => 'admin'],['name' => 'control escolar'],['name' => 'maestro']];
         $permissions = [
-            ['guard_name' => 'sanctum','name' =>'crear examenes'], ['guard_name' => 'sanctum','name' =>'editar examenes'], ['guard_name' => 'sanctum','name' =>'ver examenes'], ['guard_name' => 'sanctum','name' =>'eliminar examenes'],
-            ['guard_name' => 'sanctum','name' =>'crear usuario'], ['guard_name' => 'sanctum','name' =>'editar usuario'], ['guard_name' => 'sanctum','name' =>'ver usuario'], ['guard_name' => 'sanctum','name' =>'eliminar usuario'],
-            ['guard_name' => 'sanctum','name' =>'crear materias'], ['guard_name' => 'sanctum','name' =>'editar materias'], ['guard_name' => 'sanctum','name' =>'ver materias'], ['guard_name' => 'sanctum','name' =>'eliminar materias']
+            ['name' =>'crear examenes'], ['name' =>'editar examenes'], ['name' =>'ver examenes'], ['name' =>'eliminar examenes'],
+            ['name' =>'crear usuario'], ['name' =>'editar usuario'], ['name' =>'ver usuario'], ['name' =>'eliminar usuario'],
+            ['name' =>'crear materias'], ['name' =>'editar materias'], ['name' =>'ver materias'], ['name' =>'eliminar materias']
         ];
         foreach ($roles as $role) {
             Role::create($role);

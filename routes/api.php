@@ -14,20 +14,17 @@ use App\Models\User;
 |
 */
 Route::post('/login',[App\Http\Controllers\Api\V1\AuthController::class,'login']);
-Route::middleware('web')->group( function () {
-    Route::apiResource('permissions', App\Http\Controllers\Api\V1\PermissionController::class);
-});
 Route::middleware('auth:sanctum')->group( function () {
     Route::post('/logout',[App\Http\Controllers\Api\V1\AuthController::class,'logout']);
     Route::get('/user',function (Request $request) {
         $user = User::with(['roles','permissions'])->where('id', $request->user()->id)->first();
         return response()->json($user);
     });
-
     Route::apiResource('roles', App\Http\Controllers\Api\V1\RoleController::class);
+    Route::apiResource('permissions', App\Http\Controllers\Api\V1\PermissionController::class);
     Route::apiResource('users', App\Http\Controllers\Api\V1\UserController::class);
     Route::apiResource('subjects', App\Http\Controllers\Api\V1\SubjectController::class);
+    Route::apiResource('examenes', App\Http\Controllers\Api\V1\ExamenController::class);
 });
-Route::apiResource('examenes', App\Http\Controllers\Api\V1\ExamenController::class);
 
 
