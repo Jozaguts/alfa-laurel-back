@@ -72,4 +72,16 @@ class ExamenController extends Controller
             ->delete();
         return response()->json(['success' => $result, 'message' => $result ? 'Examen eliminado' : 'No fue posible eliminar el examen']);
     }
+
+    public function deleteQuestion(Request $request)
+    {
+
+        $question = Question::find($request->questionID)
+            ->where('exam_id', $request->examenID)
+            ->first();
+
+        $result = $question->delete();
+
+        return response()->json(['success' => $result, 'message' => $result ? 'Pregunta eliminada' : 'No fue posible eliminar la pregunta examen']);
+    }
 }
