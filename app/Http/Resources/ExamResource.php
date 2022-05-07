@@ -16,10 +16,11 @@ class ExamResource extends JsonResource
     {
 
         return [
-         'name' => $this->name,
-         'user_id' => $this->user_id,
-         'subject_id' => $this->subject_id,
-         'questions' => array_map(function($question) {
+            'examen_id' => $this->id,
+            'name' => $this->name,
+            'user_id' => $this->user_id,
+            'subject_id' => $this->subject_id,
+            'questions' => array_map(function($question) {
 
              return [
                  'id' => $question['id'],
