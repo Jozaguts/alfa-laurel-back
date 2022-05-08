@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('permissions', App\Http\Controllers\Api\V1\PermissionController::class);
     Route::apiResource('users', App\Http\Controllers\Api\V1\UserController::class);
     Route::apiResource('subjects', App\Http\Controllers\Api\V1\SubjectController::class);
+    Route::post('examenes/question',[App\Http\Controllers\Api\V1\ExamenController::class,'deleteQuestion']);
     Route::apiResource('examenes', App\Http\Controllers\Api\V1\ExamenController::class);
 });
 
