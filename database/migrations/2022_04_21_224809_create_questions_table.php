@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->string('question');
-            $table->integer('number');
-            $table->integer('answer');
+            $table->string('question')->nullable();
+            $table->integer('number')->nullable();
+            $table->integer('answer')->nullable();
             $table->enum('level', ['A', 'M','B']);
-            $table->unsignedBigInteger('exam_id');
+            $table->unsignedBigInteger('exam_id')->nullable();
             $table->foreign('exam_id')
                 ->references('id')
                 ->on('exams')
