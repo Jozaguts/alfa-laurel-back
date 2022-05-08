@@ -106,10 +106,10 @@ class ExamenController extends Controller
     public function deleteQuestion(Request $request)
     {
 
-        $question = Question::find($request->questionID)
-            ->where('exam_id', $request->examenID)
-            ->first();
-
+        $question = Question::where('id',$request->questionID)->first();
+        forEach($question->options as $option) {
+            $option->delete();
+        }
         $result = $question->delete();
 
         return response()->json(['success' => $result, 'message' => $result ? 'Pregunta eliminada' : 'No fue posible eliminar la pregunta examen']);
