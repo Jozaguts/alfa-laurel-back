@@ -22,6 +22,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('option');
             $table->boolean('is_answer')->default(0);
+            $table->tinyInteger('number')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

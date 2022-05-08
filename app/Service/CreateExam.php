@@ -33,18 +33,21 @@ class CreateExam
                 DB::table('options')->insert([
                     'question_id' => $questionId,
                     'option' => $question['options'][0]['option'],
+                    'number' => $question['options'][0]['number'],
                     'is_answer' => $question['options'][0]['is_answer'],
                     "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
                 ]);
                 DB::table('options')->insert([
                     'question_id' => $questionId,
                     'option' =>$question['options'][1]['option'],
+                    'number' => $question['options'][1]['number'],
                     'is_answer' => $question['options'][1]['is_answer'],
                     "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
                 ]);
                 DB::table('options')->insert([
                     'question_id' => $questionId,
                     'option' => $question['options'][2]['option'],
+                    'number' => $question['options'][2]['number'],
                     'is_answer' => $question['options'][2]['is_answer'],
                     "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
                 ]);
