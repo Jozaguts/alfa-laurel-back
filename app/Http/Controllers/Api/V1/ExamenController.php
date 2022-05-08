@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ExamStoreRequest;
 use App\Http\Resources\ExamResource;
 use App\Models\Exam;
+use App\Models\Option;
 use App\Models\Question;
 use App\Service\CreateExam;
 use App\Service\ExamDTO;
@@ -48,16 +49,45 @@ class ExamenController extends Controller
         );
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param  int  $id
-     * @return Response
-     */
     public function update(Request $request, $id)
     {
-        //
+
+        $exam = Exam::find($id)->first();
+        $exam->name = $request->name;
+        $exam->subject_id = $request->subject_id;
+        $exam->user_id = $request->user_id;
+        $exam->save();
+
+        forEach($request['questions'] as $question ) {
+            $q = Question::firstOrCreate(['number' => $question['number']]);
+            $q->exam_id = $id;
+            $q->question = $question['question'];
+            $q->answer = (int)$question['answer'];
+            $q->level = $question['level'];
+            $q->save();
+            Option::updateOrCreate(
+                ['number' => $question['options'][0]['number'], 'question_id' => $q->id],
+                [
+                    'is_answer' => $question['options'][0]['is_answer'],
+                    'option'=> $question['options'][0]['option'],
+                ]
+            );
+
+            Option::updateOrCreate(
+                ['number' => $question['options'][1]['number'], 'question_id' => $q->id],
+                [
+                    'is_answer' => $question['options'][1]['is_answer'],
+                    'option'=> $question['options'][1]['option'],
+                ]
+            );
+            Option::updateOrCreate(
+                ['number' => $question['options'][2]['number'], 'question_id' => $q->id],
+                [
+                    'is_answer' => $question['options'][2]['is_answer'],
+                    'option'=> $question['options'][2]['option'],
+                ]
+            );
+        }
     }
 
     /**

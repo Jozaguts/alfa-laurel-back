@@ -36,6 +36,7 @@ class ExamStoreRequest extends FormRequest
             'questions.*.answer' =>  [Rule::requiredIf(!request()->hasFile('file')),'integer'],
             'questions.*.options.*.option' => [Rule::requiredIf(!request()->hasFile('file')),'string'],
             'questions.*.options.*.is_answer' => [Rule::requiredIf(!request()->hasFile('file')),'boolean'],
+            'questions.*.options.*.number' => [Rule::requiredIf(!request()->hasFile('file')),'integer'],
         ];
     }
 }
