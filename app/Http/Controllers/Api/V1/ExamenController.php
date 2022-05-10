@@ -52,19 +52,22 @@ class ExamenController extends Controller
     public function update(Request $request, $id)
     {
 
-        $exam = Exam::find($id)->first();
+        $exam = Exam::where('id', $id)->first();
+
         $exam->name = $request->name;
         $exam->subject_id = $request->subject_id;
         $exam->user_id = $request->user_id;
         $exam->save();
 
         forEach($request['questions'] as $question ) {
-            $q = Question::firstOrCreate(['number' => $question['number']]);
-            $q->exam_id = $id;
-            $q->question = $question['question'];
-            $q->answer = (int)$question['answer'];
-            $q->level = $question['level'];
-            $q->save();
+            $q = Question::updateOrCreate(
+                ['number' => $question['number'], 'exam_id' => $id],
+                [
+                    'question'=> $question['question'],
+                    'answer'=> (int)$question['answer'],
+                    'level'=> $question['level'],
+                ]
+            );
             Option::updateOrCreate(
                 ['number' => $question['options'][0]['number'], 'question_id' => $q->id],
                 [
