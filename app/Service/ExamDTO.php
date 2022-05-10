@@ -75,14 +75,17 @@ class ExamDTO
                 $options[] = [
                     'option' => $question[3],
                     'is_answer' => $question[6] === 1,
+                    'number' => 1,
                 ];
                 $options[] = [
                     'option' => $question[4],
                     'is_answer' => $question[6] === 2,
+                    'number' => 2,
                 ];
                 $options[] = [
                     'option' => $question[5],
                     'is_answer' => $question[6] === 3,
+                    'number' => 3,
                 ];
               return [
                   'number' => $question[self::NUMBER_INDEX],
