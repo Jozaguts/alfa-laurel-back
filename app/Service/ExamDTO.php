@@ -11,6 +11,9 @@ class ExamDTO
     public int $subject_id;
     public int $user_id;
     public mixed $questions;
+    private int $counterLow;
+    private int $counterMedium;
+    private int $counterHigh;
     const ANSWER_INDEX = 6, NUMBER_INDEX = 0, QUESTION_INDEX = 1, LEVEL_INDEX = 2;
     public function __construct($data)
     {
@@ -18,10 +21,38 @@ class ExamDTO
         $this->name = $data['name'];
         $this->subject_id = $data['subject_id'];
         $this->user_id = $data['user_id'];
+        $this->counterLow = $data['low'];
+        $this->counterMedium = $data['medium'];
+        $this->counterHigh = $data['high'];
         request()->hasFile('file')
             ? $this->questions = request()->file('file')
             : $this->questions = $data['questions'];
     }
+
+    /**
+     * @return int|mixed
+     */
+    public function getCounterLow(): mixed
+    {
+        return $this->counterLow;
+    }
+
+    /**
+     * @return int|mixed
+     */
+    public function getCounterMedium(): mixed
+    {
+        return $this->counterMedium;
+    }
+
+    /**
+     * @return int|mixed
+     */
+    public function getCounterHigh(): mixed
+    {
+        return $this->counterHigh;
+    }
+
 
     /**
      * @return mixed|string
@@ -55,6 +86,21 @@ class ExamDTO
             unset($arrayQuestion[0]);
            $this->questions = $this->questionNormalized($arrayQuestion);
         }
+
+          $counterLow =   count(array_filter($this->questions, function($question) {return $question['level'] == 'B';}));
+          $counterMedium =   count(array_filter($this->questions, function($question) {return $question['level'] == 'M';}));
+          $counterHigh =   count(array_filter($this->questions, function($question) {return $question['level'] == 'A';}));
+
+        if ($counterLow < (int) $this->counterLow) {
+            abort('400',"El numero de preguntas en nivel BAJO ({$this->counterLow}) que quieres asignar es mayor a la cantidad disponible ({$counterLow})");
+        }
+        if ($counterMedium < (int) $this->counterMedium) {
+            abort('400',"El numero de preguntas en nivel MEDIO ({$this->counterMedium}) que quieres asignar es mayor a la cantidad disponible ({$counterMedium})");
+        }
+        if ($counterHigh < (int) $this->counterHigh) {
+            abort('400',"El numero de preguntas en nivel ALTO  ({$this->counterHigh}) que quieres asignar es mayor a la cantidad disponible ({$counterHigh})");
+        }
+
         return $this->questions;
     }
     private function initReader(): \PhpOffice\PhpSpreadsheet\Spreadsheet|string
@@ -92,6 +138,7 @@ class ExamDTO
                   'question' => $question[self::QUESTION_INDEX],
                   'level' => $question[self::LEVEL_INDEX],
                   'answer' => $question[self::ANSWER_INDEX],
+
                   'options' => $options
               ];
             },$arrayQuestion);

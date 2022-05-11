@@ -58,7 +58,9 @@ class ExamenController extends Controller
         $exam->subject_id = $request->subject_id;
         $exam->user_id = $request->user_id;
         $exam->save();
-
+        $counterLow = 0;
+        $counterMedium = 0;
+        $counterHigh = 0;
         forEach($request['questions'] as $question ) {
             $q = Question::updateOrCreate(
                 ['number' => $question['number'], 'exam_id' => $id],
@@ -68,6 +70,17 @@ class ExamenController extends Controller
                     'level'=> $question['level'],
                 ]
             );
+            switch ($question['level']) {
+                case "A":
+                    $counterHigh++;
+                break;
+                case "M":
+                    $counterMedium++;
+                break;
+                case "B":
+                    $counterLow++;
+                break;
+            }
             Option::updateOrCreate(
                 ['number' => $question['options'][0]['number'], 'question_id' => $q->id],
                 [
@@ -90,6 +103,15 @@ class ExamenController extends Controller
                     'option'=> $question['options'][2]['option'],
                 ]
             );
+        }
+        if ($counterLow < (int)$request->low) {
+            abort('400',"El numero de preguntas en nivel BAJO ({$request->low}) que quieres asignar es mayor a la cantidad disponible ({$counterLow})");
+        }
+        if ($counterMedium < (int)$request->medium) {
+            abort('400',"El numero de preguntas en nivel MEDIO ({$request->medium}) que quieres asignar es mayor a la cantidad disponible ({$counterMedium})");
+        }
+        if ($counterHigh < (int)$request->high) {
+        abort('400',"El numero de preguntas en nivel ALTO  ({$request->high}) que quieres asignar es mayor a la cantidad disponible ({$counterHigh})");
         }
     }
 

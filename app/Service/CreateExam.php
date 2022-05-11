@@ -19,9 +19,14 @@ class CreateExam
                 'name' => $this->examDto->getName(),
                 'subject_id' => $this->examDto->getSubjectId(),
                 'user_id' => $this->examDto->getUserId(),
-                "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
+                'low' => $this->examDto->getCounterLow(),
+                'medium' => $this->examDto->getCounterMedium(),
+                'high' => $this->examDto->getCounterHigh(),
+                "created_at" =>  \Carbon\Carbon::now(),
             ]);
+
             forEach($this->examDto->getQuestions() as $question) {
+
                 $questionId = DB::table('questions')->insertGetId([
                     'number' => $question['number'],
                     'question' => $question['question'],

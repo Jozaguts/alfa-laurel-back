@@ -26,9 +26,10 @@ return new class extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-            $table->integer('alto')->nullable();
-            $table->integer('medio')->nullable();
-            $table->integer('bajo')->nullable();
+            $table->integer('low');
+            $table->integer('medium');
+            $table->integer('high');
+            $table->integer('minutes')->nullable()->default(60);
 
             $table->softDeletes();
             $table->timestamps();

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Exam extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['subject_id', 'name','user_id','alto','medio','bajo'];
+    protected $fillable = ['subject_id', 'name','user_id','low','medium','high'];
 
     public function questions()
     {
