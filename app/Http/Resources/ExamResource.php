@@ -20,6 +20,9 @@ class ExamResource extends JsonResource
             'name' => $this->name,
             'user_id' => $this->user_id,
             'subject_id' => $this->subject_id,
+            'low' => $this->low,
+            'medium' => $this->medium,
+            'high' => $this->high,
             'questions' => array_map(function($question) {
 
              return [
