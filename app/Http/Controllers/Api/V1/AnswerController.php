@@ -27,8 +27,8 @@ class AnswerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(AnswerStoreRequest $request)
-    {                
-        $answer = new CreateAnswer($request->validate());
+    {              
+        $answer = new CreateAnswer($request->validated());
         // $answer = new CreateAnswer($request);
         $result = $answer->execute();
         return response()->json($result['message'], $result['success'] ? 201 : 400 );
@@ -42,7 +42,7 @@ class AnswerController extends Controller
      */
     public function show($id)
     {
-        
+        // dd($id);
     }
 
     /**
