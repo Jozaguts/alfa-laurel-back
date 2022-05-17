@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExamStoreRequest;
 use App\Http\Resources\ExamResource;
+use App\Http\Resources\ExamsCollection;
+use App\Http\Resources\ExamWithoutAnswersResource;
 use App\Models\Exam;
 use App\Models\Option;
 use App\Models\Question;
+use App\Models\Subject;
+use App\Models\User;
 use App\Service\CreateExam;
 use App\Service\ExamDTO;
 use Illuminate\Http\JsonResponse;
@@ -138,5 +142,33 @@ class ExamenController extends Controller
         $result = $question->delete();
 
         return response()->json(['success' => $result, 'message' => $result ? 'Pregunta eliminada' : 'No fue posible eliminar la pregunta examen']);
+    }
+
+    public function initExam(): JsonResponse
+    {
+        $response = [];
+        $response['users'] = User::with('roles')->get();
+        $response['subjects'] = Subject::all();
+
+        return response()->json($response,200);
+    }
+    public function exam(Request $request, $id): ExamWithoutAnswersResource
+    {
+        return new ExamWithoutAnswersResource(Exam::with('questions')
+            ->with('options')
+            ->where('id', $id)
+            ->first());
+    }
+
+    public function exams($user_id, $subject_id): JsonResponse
+    {
+        return response()->json(
+          ['exams' => Exam::select('exams.id','exams.name','users.code')
+              ->join('users','users.id', '=','exams.user_id')
+              ->where('user_id', $user_id)
+              ->where('subject_id', $subject_id)
+              ->get()
+          ],200
+        );
     }
 }
