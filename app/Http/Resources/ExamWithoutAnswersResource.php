@@ -18,6 +18,7 @@ class ExamWithoutAnswersResource extends JsonResource
     {
         return [
             'examen_id' => $this->id,
+            'minutes' => $this->minutes,
             'name' => $this->name,
             'user_id' => $this->user_id,
             'subject_id' => $this->subject_id,
