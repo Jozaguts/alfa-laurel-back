@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Service;
+
+use App\Models\Question;
 use Illuminate\Support\Facades\DB;
 
 class CreateAnswer
@@ -17,21 +19,20 @@ class CreateAnswer
 
     public function __construct($data)
     {        
-        $this->subject_id = $data[0]['subject_id'];        
-        $this->exam_id = $data[0]['exam_id'];
-        $this->user_id = $data[0]['user_id'];
-        $this->minutes_assigns = $data[0]['minutes_assigns'];
-        $this->minutes = $data[0]['minutes'];
-        $this->student_code = $data[0]['student_code'];
-        $this->student_name = $data[0]['student_name'];
-        $this->answers_details = $data[0]['answers_details'];        
+        $this->subject_id = $data['subject_id'];        
+        $this->exam_id = $data['exam_id'];
+        $this->user_id = $data['user_id'];
+        $this->minutes_assigns = $data['minutes_assigns'];
+        $this->minutes = $data['minutes'];
+        $this->student_code = $data['student_code'];
+        $this->student_name = $data['student_name'];
+        $this->answers_details = $data['answers_details'];        
     }
 
     public function execute(){
         DB::beginTransaction();
         try {
-            
-            $answer = DB::table('answers')->insertGetId([
+            $answerId = DB::table('answers')->insertGetId([
                 'subject_id' => $this->subject_id,
                 'exam_id' => $this->exam_id, 
                 'user_id' => $this->user_id,
@@ -42,9 +43,12 @@ class CreateAnswer
                 'created_at' => \Carbon\Carbon::now(),
             ]);
             
+
             foreach($this->answers_details as $detail){
-                $det = DB::table('answers_details')->insertGetId([
-                    'answer_id' => $detail['answer_id'],
+                $correcta= ($detail['answer'] == Question::find(1)->answer) ? true : false;
+        
+                $det = DB::table('answer_details')->insertGetId([
+                    'answer_id' => $answerId,
                     'question_id' => $detail['question_id'],
                     'number' => $detail['number'],
                     'question' => $detail['question'],
@@ -52,11 +56,12 @@ class CreateAnswer
                     'option2' => $detail['option2'],
                     'option3' => $detail['option3'],
                     'answer' => $detail['answer'],
-                    'is_correct' => $detail['is_correct'],
+                    'is_correct' => ($detail['answer'] == Question::find(1)->answer) ? true : false,
                     'created_at' => \Carbon\Carbon::now(),
                 ]);
             }
             DB::commit();
+            // DB::rollBack();
             return ['success' => true, 'message' => 'success'];            
         } catch (\Throwable $th) {
             DB::rollBack();
