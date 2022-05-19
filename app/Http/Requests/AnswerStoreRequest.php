@@ -24,7 +24,7 @@ class AnswerStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'subject_id' => 'required|exists:subjects,id',            
+            'subject_id' => 'required|exists:subjects,id',
 			'exam_id' => 'required|exists:exams,id',
 			'user_id' => 'required|exists:users,id',
 			'minutes_assigns' => 'required|integer',
@@ -36,12 +36,12 @@ class AnswerStoreRequest extends FormRequest
             'answers_details.*.question_id'=> 'required|integer',
             'answers_details.*.number'=> 'required|integer',
             'answers_details.*.question'=> 'required',
-            'answers_details.*.option1'=> 'required|integer',
-            'answers_details.*.option2'=> 'required|integer',
-            'answers_details.*.option3'=> 'required|integer',
+            'answers_details.*.option1'=> 'required',
+            'answers_details.*.option2'=> 'required',
+            'answers_details.*.option3'=> 'required',
             'answers_details.*.level'=> 'required|max:1',
-            'answers_details.*.answer'=> 'required|integer'
-            
+            'answers_details.*.answer'=> 'required'
+
         ];
     }
 }

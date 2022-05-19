@@ -18,15 +18,15 @@ class CreateAnswer
     private $answers_details;
 
     public function __construct($data)
-    {        
-        $this->subject_id = $data['subject_id'];        
+    {
+        $this->subject_id = $data['subject_id'];
         $this->exam_id = $data['exam_id'];
         $this->user_id = $data['user_id'];
         $this->minutes_assigns = $data['minutes_assigns'];
         $this->minutes = $data['minutes'];
         $this->student_code = $data['student_code'];
         $this->student_name = $data['student_name'];
-        $this->answers_details = $data['answers_details'];        
+        $this->answers_details = $data['answers_details'];
     }
 
     public function execute(){
@@ -34,7 +34,7 @@ class CreateAnswer
         try {
             $answerId = DB::table('answers')->insertGetId([
                 'subject_id' => $this->subject_id,
-                'exam_id' => $this->exam_id, 
+                'exam_id' => $this->exam_id,
                 'user_id' => $this->user_id,
                 'minutes_assigns' => $this->minutes_assigns,
                 'minutes' => $this->minutes,
@@ -42,11 +42,11 @@ class CreateAnswer
                 'student_name' => $this->student_name,
                 'created_at' => \Carbon\Carbon::now(),
             ]);
-            
+
 
             foreach($this->answers_details as $detail){
                 $correcta= ($detail['answer'] == Question::find(1)->answer) ? true : false;
-        
+
                 $det = DB::table('answer_details')->insertGetId([
                     'answer_id' => $answerId,
                     'question_id' => $detail['question_id'],
@@ -63,11 +63,11 @@ class CreateAnswer
             }
             DB::commit();
             // DB::rollBack();
-            return ['success' => true, 'message' => 'success'];            
+            return ['success' => true, 'message' => 'success'];
         } catch (\Throwable $th) {
             DB::rollBack();
             return ['success'=> false, 'message'=> $th->getMessage() . $th->getFile(), $th->getLine()];
         }
-         
-    }   
+
+    }
 }
