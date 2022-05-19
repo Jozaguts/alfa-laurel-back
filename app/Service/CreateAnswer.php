@@ -56,6 +56,7 @@ class CreateAnswer
                     'option2' => $detail['option2'],
                     'option3' => $detail['option3'],
                     'answer' => $detail['answer'],
+                    'level' => $detail['level'],
                     'is_correct' => ($detail['answer'] == Question::find(1)->answer) ? true : false,
                     'created_at' => \Carbon\Carbon::now(),
                 ]);

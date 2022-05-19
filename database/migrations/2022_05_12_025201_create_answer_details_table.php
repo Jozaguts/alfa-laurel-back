@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('option2');
             $table->string('option3');
             $table->string('answer');
+            $table->string('level', 1);
             $table->boolean('is_correct');
             $table->softDeletes();
             $table->timestamps();
