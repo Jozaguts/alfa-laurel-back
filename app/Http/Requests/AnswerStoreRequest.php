@@ -30,7 +30,19 @@ class AnswerStoreRequest extends FormRequest
 			'minutes_assigns' => 'required|integer',
 			'minutes' => 'required|integer',
             'student_code' => 'required|max:20',
-            'student_name' => 'required|max:100'
+            'student_name' => 'required|max:100',
+
+            'answers_details.*.answer_id'=> 'required|integer',
+            'answers_details.*.question_id'=> 'required|integer',
+            'answers_details.*.number'=> 'required|integer',
+            'answers_details.*.question'=> 'required',
+            'answers_details.*.option1'=> 'required|integer',
+            'answers_details.*.option2'=> 'required|integer',
+            'answers_details.*.option3'=> 'required|integer',
+            'answers_details.*.level'=> 'required|max:1',
+            'answers_details.*.answer'=> 'required|integer',
+            'answers_details.*.is_correct'=> 'required',
+            
         ];
     }
 }
