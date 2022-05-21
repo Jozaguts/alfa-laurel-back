@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AnswerStoreRequest;
+use App\Http\Resources\AnswerResource;
 use App\Models\Answer;
 use Illuminate\Http\Request;
 use App\Service\CreateAnswer;
@@ -29,7 +30,6 @@ class AnswerController extends Controller
     public function store(AnswerStoreRequest $request)
     {              
         $answer = new CreateAnswer($request->validated());
-        // $answer = new CreateAnswer($request);
         $result = $answer->execute();
         return response()->json($result['message'], $result['success'] ? 201 : 400 );
     }
@@ -40,9 +40,12 @@ class AnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id): AnswerResource
     {
-        // dd($id);
+        return new AnswerResource(Answer::with('answer_details')
+            ->where('id', $id)
+            ->first()
+        );
     }
 
     /**

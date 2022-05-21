@@ -40,7 +40,8 @@ class AnswerStoreRequest extends FormRequest
             'answers_details.*.option2'=> 'required',
             'answers_details.*.option3'=> 'required',
             'answers_details.*.level'=> 'required|max:1',
-            'answers_details.*.answer'=> 'required'
+            'answers_details.*.answer'=> 'required',
+            'answers_details.*.number_answer'=> 'required'
 
         ];
     }
