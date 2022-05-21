@@ -28,4 +28,8 @@ class Answer extends Model
         return $this->belongsTo(Question::class);
     }
 
+    public function answer_details(){
+        return $this->hasMany(AnswerDetail::class);
+    }
+
 }

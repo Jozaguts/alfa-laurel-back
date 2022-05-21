@@ -34,9 +34,4 @@ class AnswerDetail extends Model
     {
         return $this->belongsTo(Question::class);
     }
-
-    public function answerDetails(): HasMany
-    {
-        return $this->hasMany(AnswerDetail::class);
-    }
 }

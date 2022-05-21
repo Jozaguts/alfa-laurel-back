@@ -29,7 +29,7 @@ class CreateAnswer
         $this->answers_details = $data['answers_details'];
     }
 
-    public function execute(){
+    public function execute(){     
         DB::beginTransaction();
         try {
             $answerId = DB::table('answers')->insertGetId([
@@ -43,10 +43,8 @@ class CreateAnswer
                 'created_at' => \Carbon\Carbon::now(),
             ]);
 
-
             foreach($this->answers_details as $detail){
-                $correcta= ($detail['answer'] == Question::find(1)->answer) ? true : false;
-
+                $correcta=  ($detail['number_answer'] == Question::find($detail['question_id'])->answer) ? true : false;
                 $det = DB::table('answer_details')->insertGetId([
                     'answer_id' => $answerId,
                     'question_id' => $detail['question_id'],
@@ -57,7 +55,7 @@ class CreateAnswer
                     'option3' => $detail['option3'],
                     'answer' => $detail['answer'],
                     'level' => $detail['level'],
-                    'is_correct' => ($detail['answer'] == Question::find(1)->answer) ? true : false,
+                    'is_correct' => ($detail['number_answer'] == Question::find($detail['question_id'])->answer) ? true : false,
                     'created_at' => \Carbon\Carbon::now(),
                 ]);
             }
