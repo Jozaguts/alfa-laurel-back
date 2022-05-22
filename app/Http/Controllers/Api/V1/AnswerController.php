@@ -29,7 +29,7 @@ class AnswerController extends Controller
      */
     public function store(AnswerStoreRequest $request)
     {              
-        $answer = new CreateAnswer($request->validated());
+        $answer = new CreateAnswer($request->validated());        
         $result = $answer->execute();
         return response()->json($result['message'], $result['success'] ? 201 : 400 );
     }

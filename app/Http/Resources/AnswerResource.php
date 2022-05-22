@@ -24,8 +24,7 @@ class AnswerResource extends JsonResource
             'student_code' => $this->student_code,
             'student_name' => $this->student_name,
             'answer_details' => array_map(function($detail){
-                
-                return [
+                return [                    
                     'id' => $detail['id'],
                     'answer_id' => $detail['answer_id'],
                     'question_id' => $detail['question_id'],
