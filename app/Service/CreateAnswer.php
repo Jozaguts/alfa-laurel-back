@@ -29,7 +29,7 @@ class CreateAnswer
         $this->answers_details = $data['answers_details'];
     }
 
-    public function execute(){     
+    public function execute(){             
         DB::beginTransaction();
         try {
             $answerId = DB::table('answers')->insertGetId([
@@ -42,7 +42,6 @@ class CreateAnswer
                 'student_name' => $this->student_name,
                 'created_at' => \Carbon\Carbon::now(),
             ]);
-
             foreach($this->answers_details as $detail){
                 $correcta=  ($detail['number_answer'] == Question::find($detail['question_id'])->answer) ? true : false;
                 $det = DB::table('answer_details')->insertGetId([

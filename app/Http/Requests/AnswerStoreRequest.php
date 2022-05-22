@@ -22,7 +22,7 @@ class AnswerStoreRequest extends FormRequest
      * @return array<string, mixed>
      */
     public function rules()
-    {
+    {       
         return [
             'subject_id' => 'required|exists:subjects,id',
 			'exam_id' => 'required|exists:exams,id',
@@ -40,8 +40,8 @@ class AnswerStoreRequest extends FormRequest
             'answers_details.*.option2'=> 'required',
             'answers_details.*.option3'=> 'required',
             'answers_details.*.level'=> 'required|max:1',
-            'answers_details.*.answer'=> 'required',
-            'answers_details.*.number_answer'=> 'required'
+            'answers_details.*.answer'=> 'nullable',
+            'answers_details.*.number_answer'=> 'nullable'
 
         ];
     }
