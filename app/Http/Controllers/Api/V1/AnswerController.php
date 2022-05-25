@@ -14,11 +14,11 @@ class AnswerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
-    {        
-        return response()->json(Answer::all());
+    {
+        return response()->json(Answer::with(['subject','user','exam','answer_details'])->get());
     }
 
     /**
@@ -28,8 +28,8 @@ class AnswerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(AnswerStoreRequest $request)
-    {              
-        $answer = new CreateAnswer($request->validated());        
+    {
+        $answer = new CreateAnswer($request->validated());
         $result = $answer->execute();
         return response()->json($result['message'], $result['success'] ? 201 : 400 );
     }
