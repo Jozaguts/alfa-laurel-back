@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,6 +12,7 @@ class Answer extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable= ['subject_id','exam_id','user_id','minutes_assigns','minutes','student_code','student_name'];
+    protected $casts = [ 'created_at' => 'datetime:m/d/Y'];
 
     public function subject(){
         return $this->belongsTo(Subject::class);
