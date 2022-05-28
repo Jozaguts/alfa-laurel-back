@@ -9,6 +9,7 @@ use App\Models\Answer;
 use Illuminate\Http\Request;
 use App\Service\CreateAnswer;
 
+
 class AnswerController extends Controller
 {
     /**
@@ -16,9 +17,11 @@ class AnswerController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Answer::with(['subject','user','exam','answer_details'])->get());
+        $from = ($request->null==null) ? now()->firstOfMonth()->format('Y-m-d') : $request->from;
+        $to = ($request->null==null) ? now()->format('Y-m-d') : $request->to;
+        return response()->json(Answer::whereBetween('created_at', [$from, $to])->get());
     }
 
     /**
