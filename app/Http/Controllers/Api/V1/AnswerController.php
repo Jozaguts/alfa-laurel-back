@@ -9,7 +9,6 @@ use App\Models\Answer;
 use Illuminate\Http\Request;
 use App\Service\CreateAnswer;
 
-
 class AnswerController extends Controller
 {
     /**
@@ -18,9 +17,9 @@ class AnswerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {      
+    {
         $from = ($request->null==null) ? now()->firstOfMonth()->format('Y-m-d') : $request->from;
-        $to = ($request->null==null) ? now()->format('Y-m-d') : $request->to;                
+        $to = ($request->null==null) ? now()->format('Y-m-d') : $request->to;
         return response()->json(Answer::whereBetween('created_at', [$from, $to])->get());
     }
 
@@ -31,8 +30,8 @@ class AnswerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(AnswerStoreRequest $request)
-    {              
-        $answer = new CreateAnswer($request->validated());        
+    {
+        $answer = new CreateAnswer($request->validated());
         $result = $answer->execute();
         return response()->json($result['message'], $result['success'] ? 201 : 400 );
     }
