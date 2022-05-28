@@ -12,7 +12,7 @@ class Answer extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable= ['subject_id','exam_id','user_id','minutes_assigns','minutes','student_code','student_name'];
-    protected $casts = [ 'created_at' => 'datetime:m/d/Y'];
+    protected $casts = [ 'created_at' => 'datetime:Y/m/d'];
 
     public function subject(){
         return $this->belongsTo(Subject::class);
