@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AnswerStoreRequest;
 use App\Http\Resources\AnswerResource;
 use App\Models\Answer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Service\CreateAnswer;
 
@@ -19,9 +20,15 @@ class AnswerController extends Controller
      */
     public function index(Request $request)
     {
-        $from = ($request->null==null) ? now()->firstOfMonth()->format('Y-m-d') : $request->from;
-        $to = ($request->null==null) ? now()->format('Y-m-d') : $request->to;
-        return response()->json(Answer::whereBetween('created_at', [$from, $to])->get());
+
+        $from = Carbon::createFromFormat('Y-m-d', $request->from ?? now()->firstOfMonth()->format('Y-m-d'));
+        $to = Carbon::createFromFormat('Y-m-d', $request->to ??now()->format('Y-m-d') );
+
+      return response()->json(Answer::with(['subject','user','exam','answer_details'])
+          ->whereBetween('created_at', [$from, $to])
+            ->get()
+        );
+
     }
 
     /**
@@ -45,10 +52,7 @@ class AnswerController extends Controller
      */
     public function show($id): AnswerResource
     {
-        return new AnswerResource(Answer::with('answer_details')
-            ->where('id', $id)
-            ->first()
-        );
+        return new AnswerResource(Answer::find($id));
     }
 
     /**
