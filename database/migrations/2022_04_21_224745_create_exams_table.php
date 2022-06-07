@@ -29,7 +29,7 @@ return new class extends Migration
             $table->integer('low');
             $table->integer('medium');
             $table->integer('high');
-            $table->integer('minutes')->nullable()->default(60);
+            $table->integer('minutes')->nullable()->default(3);
 
             $table->softDeletes();
             $table->timestamps();
