@@ -105,7 +105,12 @@ class ExamDTO
     }
     private function initReader(): \PhpOffice\PhpSpreadsheet\Spreadsheet|string
     {
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $reader = match ($this->questions->extension()) {
+            'xlsx' => new \PhpOffice\PhpSpreadsheet\Reader\Xlsx(),
+            'xls' => new \PhpOffice\PhpSpreadsheet\Reader\Xls(),
+            default => abort(401,"El formato: {$this->questions->extension()} del archivo no es soportado"),
+        };
+
         $reader->setReadDataOnly(true);
         try {
             return $reader->load($this->questions);
