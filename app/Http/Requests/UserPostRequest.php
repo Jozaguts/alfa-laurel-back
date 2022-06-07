@@ -37,4 +37,16 @@ class UserPostRequest extends FormRequest
             'comments' => 'string|nullable',
         ];
     }
+    public function attributes()
+    {
+        return [
+            'code' => 'código',
+            'password' => 'contraseña',
+            'email' => 'correo electrónico',
+            'phone'=>'teléfono',
+            'birthday' => 'fecha de nacimiento',
+            'contact_name' => 'nombre de contacto',
+            'name' => 'nombre'
+        ];
+    }
 }
