@@ -7,6 +7,7 @@ use App\Http\Requests\AnswerStoreRequest;
 use App\Http\Resources\AnswerResource;
 use App\Models\Answer;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Service\CreateAnswer;
 
@@ -16,7 +17,7 @@ class AnswerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function index(Request $request)
     {
@@ -34,10 +35,10 @@ class AnswerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param AnswerStoreRequest $request
+     * @return JsonResponse
      */
-    public function store(AnswerStoreRequest $request)
+    public function store(AnswerStoreRequest $request): JsonResponse
     {
         $answer = new CreateAnswer($request->validated());
         $result = $answer->execute();
@@ -69,7 +70,7 @@ class AnswerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
