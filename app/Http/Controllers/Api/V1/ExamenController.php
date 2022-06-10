@@ -21,6 +21,12 @@ use Illuminate\Support\Facades\DB;
 
 class ExamenController extends Controller
 {
+    public function __construct() {
+        $this->middleware('levelsAreOk')->only('update');
+    }
+
+
+
     /**
      * Display a listing of the resource.
      *
