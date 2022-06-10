@@ -55,12 +55,13 @@ class ExamenController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $exam = Exam::where('id', $id)->first();
-
         $exam->name = $request->name;
         $exam->subject_id = $request->subject_id;
         $exam->user_id = $request->user_id;
+        $exam->low = $request->low;
+        $exam->medium = $request->medium;
+        $exam->high = $request->high;
         $exam->save();
         $counterLow = 0;
         $counterMedium = 0;
