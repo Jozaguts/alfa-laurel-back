@@ -4,9 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class EnsureLevelsAreValid
 {
@@ -28,6 +26,7 @@ class EnsureLevelsAreValid
         }else if ($countedLevels['A'] < $data['high']) {
             return $this->sendJsonError($countedLevels['A'],$data['high'],'ALTO');
         }
+
         return $next($request);
     }
     public function sendJsonError(int $countLevel, $requiredLevel,string $levelName): JsonResponse
