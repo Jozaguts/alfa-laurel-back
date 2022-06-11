@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExamStoreRequest;
+use App\Http\Requests\UpdateExamRequest;
 use App\Http\Resources\ExamResource;
 use App\Http\Resources\ExamsCollection;
 use App\Http\Resources\ExamWithoutAnswersResource;
@@ -24,8 +25,6 @@ class ExamenController extends Controller
     public function __construct() {
         $this->middleware('levelsAreOk')->only('update');
     }
-
-
 
     /**
      * Display a listing of the resource.
@@ -59,71 +58,23 @@ class ExamenController extends Controller
         );
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateExamRequest $request, $id): JsonResponse
     {
-        $exam = Exam::where('id', $id)->first();
-        $exam->name = $request->name;
-        $exam->subject_id = $request->subject_id;
-        $exam->user_id = $request->user_id;
-        $exam->low = $request->low;
-        $exam->medium = $request->medium;
-        $exam->high = $request->high;
-        $exam->save();
-        $counterLow = 0;
-        $counterMedium = 0;
-        $counterHigh = 0;
-        forEach($request['questions'] as $question ) {
-            $q = Question::updateOrCreate(
-                ['number' => $question['number'], 'exam_id' => $id],
-                [
-                    'question'=> $question['question'],
-                    'answer'=> (int)$question['answer'],
-                    'level'=> $question['level'],
-                ]
-            );
-            switch ($question['level']) {
-                case "A":
-                    $counterHigh++;
-                break;
-                case "M":
-                    $counterMedium++;
-                break;
-                case "B":
-                    $counterLow++;
-                break;
-            }
-            Option::updateOrCreate(
-                ['number' => $question['options'][0]['number'], 'question_id' => $q->id],
-                [
-                    'is_answer' => $question['options'][0]['is_answer'],
-                    'option'=> $question['options'][0]['option'],
-                ]
-            );
-
-            Option::updateOrCreate(
-                ['number' => $question['options'][1]['number'], 'question_id' => $q->id],
-                [
-                    'is_answer' => $question['options'][1]['is_answer'],
-                    'option'=> $question['options'][1]['option'],
-                ]
-            );
-            Option::updateOrCreate(
-                ['number' => $question['options'][2]['number'], 'question_id' => $q->id],
-                [
-                    'is_answer' => $question['options'][2]['is_answer'],
-                    'option'=> $question['options'][2]['option'],
-                ]
-            );
+        try{
+            DB::beginTransaction();
+                DB::table('exams')
+                    ->where('id', $id)
+                    ->update(
+                        $request->only(['name','subject_id','user_id','low','medium','high'])
+                    );
+                Question::updateOrCreateByExamId($id);
+                Option::updateOrCreateAllOptions(array_column($request['questions'],'options'));
+            DB::commit();
+        }catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json($e->getMessage(),400);
         }
-        if ($counterLow < (int)$request->low) {
-            abort('400',"El numero de preguntas en nivel BAJO ({$request->low}) que quieres asignar es mayor a la cantidad disponible ({$counterLow})");
-        }
-        if ($counterMedium < (int)$request->medium) {
-            abort('400',"El numero de preguntas en nivel MEDIO ({$request->medium}) que quieres asignar es mayor a la cantidad disponible ({$counterMedium})");
-        }
-        if ($counterHigh < (int)$request->high) {
-        abort('400',"El numero de preguntas en nivel ALTO  ({$request->high}) que quieres asignar es mayor a la cantidad disponible ({$counterHigh})");
-        }
+        return response()->json('Examen actualizado correctamente',200 );
     }
 
     /**
@@ -178,7 +129,6 @@ class ExamenController extends Controller
           ],200
         );
     }
-
     public function appliedExams(){
         // TODO
     }
