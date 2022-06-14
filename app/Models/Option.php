@@ -15,18 +15,16 @@ class Option extends Model
     {
         return $this->hasOne(Question::class);
     }
-    public static function updateOrCreateAllOptions($allOptions)
+    public static function updateOrCreateAllOptions($options, $questionID)
     {
-        array_map(function($options){
-            array_map(function($option){
-                static::updateOrCreate(
-                    ['number' => $option['number'], 'question_id' => $option['question_id']],
-                    [
-                        'is_answer' => $option['is_answer'],
-                        'option'=> $option['option'],
-                    ]
-                );
-            },$options);
-        },$allOptions);
+        array_map(function($option) use($questionID){
+            static::updateOrCreate(
+                ['number' => $option['number'], 'question_id' => $questionID],
+                [
+                    'is_answer' => $option['is_answer'],
+                    'option'=> $option['option'],
+                ]
+            );
+        },$options);
     }
 }

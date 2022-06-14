@@ -30,8 +30,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('subjects', App\Http\Controllers\Api\V1\SubjectController::class);
     Route::post('examenes/question',[App\Http\Controllers\Api\V1\ExamenController::class,'deleteQuestion']);
     Route::post('examenes-aplicados',[App\Http\Controllers\Api\V1\ExamenController::class,'appliedExams']);
-    Route::apiResource('examenes', App\Http\Controllers\Api\V1\ExamenController::class);
     Route::get('respuestas/{id}',[App\Http\Controllers\Api\V1\AnswerController::class,'show']);
+    Route::apiResource('examenes', App\Http\Controllers\Api\V1\ExamenController::class);
 });
 Route::get('respuestas',[App\Http\Controllers\Api\V1\AnswerController::class,'index']);
 Route::post('respuestas',[App\Http\Controllers\Api\V1\AnswerController::class,'store']);

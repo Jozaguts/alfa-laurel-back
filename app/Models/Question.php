@@ -21,8 +21,9 @@ class Question extends Model
         return $this->hasMany(Option::class);
     }
     public static function updateOrCreateByExamId(int $exam_id) {
+
         array_map(function($question) use ($exam_id){
-            static::updateOrCreate(
+            $currentQuestion =  static::updateOrCreate(
                 ['number' => $question['number'], 'exam_id' => $exam_id],
                 [
                     'question'=> $question['question'],
@@ -30,6 +31,7 @@ class Question extends Model
                     'level'=> $question['level'],
                 ]
             );
+            Option::updateOrCreateAllOptions($question['options'], $currentQuestion['id']);
         },request()['questions']);
     }
 

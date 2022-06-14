@@ -68,7 +68,7 @@ class ExamenController extends Controller
                         $request->only(['name','subject_id','user_id','low','medium','high'])
                     );
                 Question::updateOrCreateByExamId($id);
-                Option::updateOrCreateAllOptions(array_column($request['questions'],'options'));
+
             DB::commit();
         }catch (\Exception $e) {
             DB::rollBack();
