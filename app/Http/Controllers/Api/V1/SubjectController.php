@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\SubjectStoreRequest;
+use App\Models\Exam;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Subject;
@@ -22,6 +23,9 @@ class SubjectController extends Controller
 
     public function destroy($id)
     {
+        if (Exam::where('subject_id', $id)->count()){
+            return abort(400,'No es posible eliminar la materia, debido a que cuenta con exámenes asignados');
+        }
         $result = Subject::find($id)
             ->delete();
 

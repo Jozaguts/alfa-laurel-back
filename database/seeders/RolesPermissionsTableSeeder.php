@@ -34,5 +34,8 @@ class RolesPermissionsTableSeeder extends Seeder
         User::where('email', '=', 'admin@example.com')
             ->first()
             ->assignRole('admin');
+        User::where('email', '=', 'maestro@example.com')
+            ->first()
+            ->assignRole('maestro');
     }
 }

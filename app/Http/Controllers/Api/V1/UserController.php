@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserUpdateRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use  App\Http\Requests\UserPostRequest;
@@ -15,11 +15,20 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        return response()->json(User::with('roles')->get());
+        if ($request->get('role') === 'teachers') {
+            return response()->json(User::whereHas('roles', function($query){
+                $query->where('name', '=', 'maestro');
+            })
+                ->with('roles')
+                ->get());
+        } else {
+            return response()->json(User::with('roles')->get());
+        }
     }
 
     /**
@@ -67,12 +76,22 @@ class UserController extends Controller
             'role' => 'string|nullable',
         ]);
 
-       if (isset($data['data']['password']) && !is_null($data['data']['password'])) {
-           $data['data']['password'] = Hash::make($data['data']['password']);
-       }
-        $user = User::find($id);
 
-         $result = $user->update($data['data']);
+        $user = User::find($id);
+        $user->name = $data['data']['name'];
+        $user->code = $data['data']['code'];
+        $user->email = $data['data']['email'];
+        $user->paternal_name = $data['data']['paternal_name'];
+        $user->maternal_name = $data['data']['maternal_name'];
+        $user->birthday = $data['data']['birthday'];
+        $user->address = $data['data']['address'];
+        $user->phone = $data['data']['phone'];
+        $user->contact_name = $data['data']['contact_name'];
+        $user->comments = $data['data']['comments'];
+        if (isset($data['data']['password']) && !is_null($data['data']['password'])) {
+            $user->password  = Hash::make($data['data']['password']);
+        }
+        $result = $user->save();
         if (isset($data['data']['role']) && !is_null($data['data']['role'])) {
             $user->syncRoles([$data['data']['role']]);
         }
