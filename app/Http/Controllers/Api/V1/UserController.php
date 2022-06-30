@@ -27,7 +27,7 @@ class UserController extends Controller
                 ->with('roles')
                 ->get());
         } else {
-            return response()->json(User::with('roles')->get());
+            return response()->json(User::with('roles')->whereNot('email','=','iscdavidarreola@gmail.com')->get());
         }
     }
 
