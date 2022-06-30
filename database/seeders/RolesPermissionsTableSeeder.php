@@ -18,24 +18,18 @@ class RolesPermissionsTableSeeder extends Seeder
     public function run()
     {
         //error el los guard_name
-        $roles = [['name' => 'admin'],['name' => 'control escolar'],['name' => 'maestro']];
-        $permissions = [
-            ['name' =>'crear examenes'], ['name' =>'editar examenes'], ['name' =>'ver examenes'], ['name' =>'eliminar examenes'],
-            ['name' =>'crear usuario'], ['name' =>'editar usuario'], ['name' =>'ver usuario'], ['name' =>'eliminar usuario'],
-            ['name' =>'crear materias'], ['name' =>'editar materias'], ['name' =>'ver materias'], ['name' =>'eliminar materias']
-        ];
+        $roles = [['name' => 'Super Admin'],['name' => 'admin'],['name' => 'control escolar'],['name' => 'maestro']];
+
         foreach ($roles as $role) {
             Role::create($role);
         }
-        foreach ($permissions as $permission) {
-            Permission::create($permission);
-        }
 
-        User::where('email', '=', 'admin@example.com')
+        User::where('email', '=', 'iscdavidarreola@gmail.com')
+            ->first()
+            ->assignRole('Super Admin');
+
+        User::where('email', '=', 'alfalaurel.online@outlook.com')
             ->first()
             ->assignRole('admin');
-        User::where('email', '=', 'maestro@example.com')
-            ->first()
-            ->assignRole('maestro');
     }
 }

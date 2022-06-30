@@ -51,6 +51,20 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $users = [
+            'super'=> [
+                'name' => $this->faker->firstName,
+                'paternal_name' => $this->faker->lastName,
+                'maternal_name' => $this->faker->lastName,
+                'email' => 'iscdavidarreola@gmail.com',
+                'password' => Hash::make('0qww294e'),
+                'code' => '1234',
+                'birthday' => $this->faker->date('11.12.10'),
+                'address' => $this->faker->streetAddress,
+                'phone' => $this->faker->e164PhoneNumber,
+                'contact_name' => $this->faker->name,
+                'comments' => $this->faker->realTextBetween(50),
+                'remember_token' => Str::random(10),
+            ],
             'admin' =>[
                 'name' => $this->faker->firstName,
                 'email' => 'alfalaurel.online@outlook.com',
@@ -65,41 +79,9 @@ class UsersTableSeeder extends Seeder
                 'comments' => $this->faker->realTextBetween(50),
                 'remember_token' => Str::random(10),
             ],
-//            'teacher'=> [
-//                'name' => $this->faker->firstName,
-//                'paternal_name' => $this->faker->lastName,
-//                'maternal_name' => $this->faker->lastName,
-//                'email' => 'maestro@example.com',
-//                'password' => Hash::make('password'),
-//                'code' => '1234',
-//                'birthday' => $this->faker->date('11.12.10'),
-//                'address' => $this->faker->streetAddress,
-//                'phone' => $this->faker->e164PhoneNumber,
-//                'contact_name' => $this->faker->name,
-//                'comments' => $this->faker->realTextBetween(50),
-//                'remember_token' => Str::random(10),
-//            ],
-//            'scholar_control'=>[
-//                'name' => $this->faker->firstName,
-//                'paternal_name' => $this->faker->lastName,
-//                'maternal_name' => $this->faker->lastName,
-//                'email' => 'control_escolar@example.com',
-//                'code' => '1234',
-//                'password' => Hash::make('password'),
-//                'birthday' => $this->faker->date('11.12.10'),
-//                'address' => $this->faker->streetAddress,
-//                'phone' => $this->faker->e164PhoneNumber,
-//                'contact_name' => $this->faker->name,
-//                'comments' => $this->faker->realTextBetween(50),
-//                'remember_token' => Str::random(10),
-//            ],
-
         ];
         foreach($users as $user ) {
             User::create($user);
         }
-//        Subject::create(['name' => 'Matemáticas']);
-//        Subject::create(['name' => 'Español']);
-//        Subject::create(['name' => 'Ingles']);
     }
 }
