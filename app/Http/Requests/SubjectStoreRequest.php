@@ -24,7 +24,7 @@ class SubjectStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' =>'required|string|unique:subjects',
+            'name' =>'required|string',
         ];
     }
 
