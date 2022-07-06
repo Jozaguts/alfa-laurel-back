@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SubjectStoreRequest extends FormRequest
 {
@@ -23,8 +24,13 @@ class SubjectStoreRequest extends FormRequest
      */
     public function rules()
     {
+        $data = $this->request->all();
         return [
-            'name' =>'required|string',
+            'name' =>[
+                'required',
+                'string',
+                Rule::unique('subjects','name')->whereNull('deleted_at')
+            ]
         ];
     }
 
