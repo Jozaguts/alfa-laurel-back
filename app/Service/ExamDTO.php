@@ -84,7 +84,16 @@ class ExamDTO
             $spreadsheet = $this->initReader();
             $arrayQuestion = $spreadsheet->getActiveSheet()->toArray();
             unset($arrayQuestion[0]);
-           $this->questions = $this->questionNormalized($arrayQuestion);
+            $badQuestions = $this->isStructureCorrect($arrayQuestion);
+
+            if(count($badQuestions) == 0){
+                $this->questions = $this->questionNormalized($arrayQuestion);
+            }else {
+                $arrya_keys = array_keys($badQuestions);
+                $questionNumbers = implode(', ',$arrya_keys);
+
+              abort(402, "La(s) pregunta(s): {$questionNumbers} presentan una inconsistencia favor de verificarlas");
+            }
         }
 
           $counterLow =   count(array_filter($this->questions, function($question) {return $question['level'] == 'B';}));
@@ -150,6 +159,22 @@ class ExamDTO
 
 
 
+    }
+
+    private function isStructureCorrect(array $arrayQuestion): array
+    {
+        $badQuestions =  array_filter($arrayQuestion,function($question) {
+              return ! (gettype($question[0]) === 'integer' &&
+                gettype($question[1]) === 'string'  && strlen($question[1]) > 1 &&
+                gettype($question[2]) === 'string'  && strlen($question[2]) == 1 && ($question[2] == 'A' || $question[2] == 'B' || $question[2] == 'M') &&
+                gettype($question[3]) === 'string'  && strlen($question[3]) > 1 &&
+                gettype($question[4]) === 'string'  && strlen($question[4]) > 1 &&
+                gettype($question[5]) === 'string'  && strlen($question[5]) > 1 &&
+                gettype($question[6]) === 'integer');
+
+
+        });
+        return $badQuestions;
     }
 
 
