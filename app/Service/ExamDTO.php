@@ -111,7 +111,7 @@ class ExamDTO
             default => abort(401,"El formato: {$this->questions->extension()} del archivo no es soportado"),
         };
 
-        $reader->setReadDataOnly(true);
+        $reader->setReadDataOnly(true); $reader->setReadEmptyCells(false);
         try {
             return $reader->load($this->questions);
         } catch (\Exception $e) {
